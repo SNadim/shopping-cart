@@ -25,9 +25,9 @@
 
                      <div class="col-md-5 center-item">
                         <div class="input-group number-spinner">
-                           <button class="btn btn-default"><i class="fas fa-minus"></i></button>
-                           <input type="text" class="form-control text-center" value="1">
-                           <button class="btn btn-default"><i class="fas fa-plus"></i></button>
+                           <button id="phone-minus" class="btn btn-default phone"><i class="fas fa-minus"></i></button>
+                           <input id="phoneQnt" type="text" class="form-control text-center" value="0">
+                           <button id="phone-plus" class="btn btn-default"><i class="fas fa-plus"></i></button>
                         </div>
                         <h5>$1219</h5>
                         <img src="images/remove.png" alt="" class="remove-item">
@@ -43,9 +43,9 @@
                      </div>
                      <div class="col-md-5 center-item">
                         <div class="input-group number-spinner">
-                           <button class="btn btn-default"><i class="fas fa-minus"></i></button>
-                           <input type="text" class="form-control text-center" value="1">
-                           <button class="btn btn-default"><i class="fas fa-plus"></i></button>
+                           <button id="casing-minus" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                           <input id="casingQnt" type="text" class="form-control text-center" value="0">
+                           <button id="casing-plus" class="btn btn-default"><i class="fas fa-plus"></i></button>
 
                         </div>
                         <h5>$59</h5>
@@ -64,19 +64,106 @@
                      </div>
 
                      <div class="col-md-4 status">
-                        <h5>$1,278</h5>
-                        <h5>$0</h5>
-                        <h5>$1,278</h5>
+                        <h5>$ <span id="total-sub-price">00</span></h5>
+                        <h5>$ <span id="total-vat">00</span></h5>
+                        <h5>$ <span id="total-price">00</span></h5>
                      </div>
                   </div>
                </div>
                <div class="col-md-12 pt-4 pb-4">
-                  <button type="button" class="btn btn-success check-out">Check Out</button>
+                  <button id="check-out-btn" type="button" class="btn btn-success check-out">Check Out</button>
                </div>
             </div>
          </div>
       </div>
    </section>
+
+
+
+   <script>
+
+
+     //Phone plus Button
+      const phonePlusBtn = document.getElementById('phone-plus');
+      phonePlusBtn.addEventListener("click" , function(){
+         const totalPhoneNumber =  productIncrement("phoneQnt");
+         document.getElementById("phoneQnt").value = totalPhoneNumber;
+      });
+
+      // Phone minus button
+
+      const phoneMinusBtn = document.getElementById('phone-minus');
+      phoneMinusBtn.addEventListener("click", function(){
+         const totalPhoneNumber =  productDecrement("phoneQnt");
+         document.getElementById("phoneQnt").value = totalPhoneNumber;
+
+      });
+
+      // Casing Plus Button
+      const casingPlusBtn = document.getElementById("casing-plus");
+      casingPlusBtn.addEventListener("click", function(){
+         const totalCasingNumber =  productIncrement("casingQnt");
+         document.getElementById("casingQnt").value = totalCasingNumber;
+
+      });
+
+      // Casing Minus Button
+
+      const casingMinusBtn = document.getElementById('casing-minus');
+      casingMinusBtn.addEventListener("click", function(){
+         const totalCasingNumber =  productDecrement("casingQnt");
+         document.getElementById("casingQnt").value = totalCasingNumber;
+
+      });
+      
+      // CheckOut Button
+
+      const checkOutBtn = document.getElementById("check-out-btn");
+      checkOutBtn.addEventListener("click", function(){
+
+         const totalPhoneNumber = parseInt(document.getElementById("phoneQnt").value);
+         const totalCasingNumber = parseInt(document.getElementById("casingQnt").value);
+
+         const totalPhoneVat = totalPhoneNumber * .15 * 1219;
+         const totalCasingVat = totalCasingNumber * .15 * 59;
+
+         const totalVat = totalPhoneVat + totalCasingVat;
+
+         const subTotalPhone = totalPhoneNumber * 1219;
+         const subTotalCasing = totalCasingNumber * 59;
+
+         const subTotal = subTotalPhone + subTotalCasing;
+
+         const totalPrice = totalVat + subTotal;
+
+         document.getElementById("total-sub-price").innerText = subTotal;
+         document.getElementById('total-vat').innerText = totalVat.toFixed(2);
+         document.getElementById("total-price").innerText = totalPrice.toFixed(2);
+
+
+
+      });
+      
+
+
+
+      function productDecrement(productQty) {
+         const productValue = document.getElementById(productQty).value;
+         const productValueNumber = parseInt(productValue);
+         if(productValueNumber>0)
+            return (productValueNumber - 1);
+
+         return 0;
+      }
+
+      function productIncrement(productQty) {
+         const productValue = document.getElementById(productQty).value;
+         const productValueNumber = parseInt(productValue);
+         const totalProduct = productValueNumber + 1;
+         return totalProduct;
+      }
+
+   </script>
 </body>
 
 </html>
